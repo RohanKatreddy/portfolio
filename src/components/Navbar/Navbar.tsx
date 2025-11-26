@@ -8,6 +8,7 @@ export default function Navbar() {
                 <a href="#experience" className={styles.link}>Experience</a>
                 <a href="#about" className={styles.link}>About</a>
                 <a href="#projects" className={styles.link}>Projects</a>
+                <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" className={styles.link}>Resume</a>
             </div>
 
             <hr className={styles.divider} />
@@ -25,13 +26,13 @@ export default function Navbar() {
                     </svg>
                     LinkedIn
                 </a>
-                <a href="mailto:email@example.com" className={styles.socialLink}>
+                <a href="mailto:rohan.katreddy@example.com" className={styles.socialLink}>
                     <svg className={styles.icon} viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                     </svg>
                     Email
                 </a>
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                     <svg className={styles.icon} viewBox="0 0 24 24" fill="currentColor">
                         <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
                     </svg>
@@ -41,4 +42,3 @@ export default function Navbar() {
         </nav>
     );
 }
-
