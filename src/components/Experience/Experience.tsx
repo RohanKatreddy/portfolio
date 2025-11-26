@@ -17,7 +17,7 @@ export default function Experience() {
         },
         {
             id: 2,
-            role: "Fixed-Wing Project Manager,  Embedded/Autonomy Developer",
+            role: "Fixed-Wing PM,  Embedded/Autonomy Developer",
             company: "Waterloo Aerial Robotics Group",
             description: "Building fixed-wing aircraft with a custom in-house autopilot"
         },
