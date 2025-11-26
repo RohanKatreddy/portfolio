@@ -1,0 +1,42 @@
+:root {
+    /* Light Theme (Default) */
+    --bg: #EBEBEB;
+    --fg: #4B4B4F;
+    --accent: #7aa2f7;
+    --card-bg: #FFFFFF;
+    --card-placeholder: #f5f5f0;
+    --card-shadow: rgba(0, 0, 0, 0.05);
+    --card-shadow-hover: rgba(0, 0, 0, 0.1);
+    --desc-color: #888;
+    --border-color: rgba(0, 0, 0, 0.1); /* Ensure this is visible */
+    --section-spacing: 60px;
+    --overlay-top: linear-gradient(to bottom, var(--bg) 20%, transparent);
+    --overlay-bottom: linear-gradient(to top, var(--bg) 20%, transparent);
+}
+
+[data-theme='dark'] {
+    /* Dark Theme */
+    --bg: #202023; /* Dark charcoal */
+    --fg: #EEEEF0; /* Off-white text */
+    --accent: #7aa2f7;
+    --card-bg: #2C2C2F; /* Darker card background */
+    --card-placeholder: #3a3a3d; /* Darker placeholder */
+    --card-shadow: rgba(0, 0, 0, 0.2);
+    --card-shadow-hover: rgba(0, 0, 0, 0.4);
+    --desc-color: #aaa;
+    --border-color: rgba(255, 255, 255, 0.15); /* Ensure this is visible */
+    --overlay-top: linear-gradient(to bottom, var(--bg) 20%, transparent);
+    --overlay-bottom: linear-gradient(to top, var(--bg) 20%, transparent);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    transition: background-color .6s ease, color .6s ease;
+    font-family: 'Inter', sans-serif;
+}
