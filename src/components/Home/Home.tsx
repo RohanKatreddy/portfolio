@@ -15,7 +15,7 @@ export default function Home() {
                 <ThemeToggle />
                 <div className={styles.content}>
                     <h1 className={styles.title}>
-                        Hey! I&rsquo;m Rohan, a <span className={styles.italic}><TypingAnimation words={['engineer', 'designer', 'developer', 'creator']} /></span>
+                        Hey! I&rsquo;m Rohan, a <span className={styles.italic}><TypingAnimation words={['engineer', 'designer', 'developer', 'bird']} /></span>
                     </h1>
                     
                     <div className={styles.subheadings}>

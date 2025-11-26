@@ -7,15 +7,29 @@ export default function ThemeToggle() {
     useEffect(() => {
         // Check local storage or system preference
         const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        let initialTheme = 'light';
         
         if (savedTheme) {
-            setTheme(savedTheme);
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        } else if (prefersDark) {
-            setTheme('dark');
-            document.documentElement.setAttribute('data-theme', 'dark');
+            initialTheme = savedTheme;
+        } else if (prefersDark.matches) {
+            initialTheme = 'dark';
         }
+        
+        setTheme(initialTheme);
+        document.documentElement.setAttribute('data-theme', initialTheme);
+
+        // Listen for system theme changes if no user preference
+        const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+            if (!localStorage.getItem('theme')) {
+                const newSystemTheme = e.matches ? 'dark' : 'light';
+                setTheme(newSystemTheme);
+                document.documentElement.setAttribute('data-theme', newSystemTheme);
+            }
+        };
+
+        prefersDark.addEventListener('change', handleSystemThemeChange);
+        return () => prefersDark.removeEventListener('change', handleSystemThemeChange);
     }, []);
 
     const toggleTheme = () => {
@@ -45,4 +59,3 @@ export default function ThemeToggle() {
         </button>
     );
 }
-
