@@ -7,7 +7,7 @@ export default function About() {
             <div className={styles.grid}>
                 <div className={styles.column}>
                     <p className={styles.text}>
-                        I&rsquo;m an engineer keen on autonomy, flight, and changing up the world. Currently building <span className={styles.link}>fully autonomous scalable drones</span>.
+                        I&rsquo;m an engineer keen on autonomy, robotics, and changing up the world. Currently building <span className={styles.link}>fully autonomous scalable drones</span>.
                     </p>
                 </div>
                 <div className={styles.column}>
@@ -19,7 +19,7 @@ export default function About() {
                     <p className={styles.text}>
                         This site holds my <span className={styles.link}>work</span> and <span className={styles.link}>ideas</span>.
                         <br /><br />
-                        Reach out at <a href="https://x.com/Rohan_Katreddy" target="_blank" rel="noopener noreferrer" className={styles.link}>@Rohan</a> or at rohan [at] portfolio [dot] org.
+                        Reach out at <a href="https://x.com/Rohan_Katreddy" target="_blank" rel="noopener noreferrer" className={styles.link}>@Rohan</a> or at <a href="mailto:rohan@hyperic.tech" className={styles.link}>rohan@hyperic.tech</a>
                     </p>
                 </div>
             </div>
