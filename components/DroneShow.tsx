@@ -25,6 +25,7 @@ type Drone = {
   sx: number; // assigned hover slot (same x, stacked altitude band)
   sy: number;
   row: number; // ground grid row
+  wave: number; // takeoff wave / hover layer (0 = first up, top layer)
   delay: number; // takeoff stagger (s)
   depth: number; // perspective scale of this drone's grid slot (far → small)
   s: number; // current render scale, eases between depth and 1
@@ -40,9 +41,10 @@ type Formation = {
 };
 
 const GROUND_END = 2.2;
-const TAKEOFF_DUR = 3.0;
-const HOLD_DUR = 0.8; // brief beat with the tilted plane aloft, then formations
+const TAKEOFF_DUR = 4.0;
+const HOLD_DUR = 1.0; // dark-sky beat before the show starts
 const PERSP = 1.7; // perspective strength of the tilted ground plane
+const WAVES = 3; // interleaved takeoff waves → stacked layers
 const FORMATION_DUR = 7.0;
 
 const DUSK_TOP: RGB = [14, 20, 48];
@@ -52,6 +54,7 @@ const NIGHT: RGB = [1, 2, 6];
 
 const HOVER_COLOR: RGB = [150, 175, 235];
 const GROUND_COLOR: RGB = [255, 190, 120];
+const DARK_COLOR: RGB = [70, 85, 125]; // parked in the sky, lights nearly off
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
@@ -302,16 +305,21 @@ export default function DroneShow() {
         const norm = (sc - smin) / (1 - smin);
         d.gx = W / 2 + u * W * 0.46 * sc + (Math.random() - 0.5) * 3 * sc;
         d.gy = farY + (nearY - farY) * norm + (Math.random() - 0.5) * 2;
-        // the whole plane lifts off together
-        d.delay = Math.random() * 0.15;
+        // interleaved waves — every 3rd drone lifts first, then the
+        // next third, then the rest
+        d.wave = (c + r) % WAVES;
+        d.delay = d.wave * 1.15 + Math.random() * 0.12;
       });
     }
 
     function buildScatter() {
-      // the plane rises as one piece and hovers mid-sky, still tilted
+      // each wave parks as its own tilted layer, first wave on top
+      const smin = 1 / (1 + PERSP);
       for (const d of drones) {
+        const norm = (d.depth - smin) / (1 - smin);
+        const top = H * (0.08 + 0.15 * d.wave);
         d.sx = d.gx + (Math.random() - 0.5) * 3;
-        d.sy = d.gy - H * 0.52 + (Math.random() - 0.5) * 3;
+        d.sy = top + norm * H * 0.12 + (Math.random() - 0.5) * 3;
       }
     }
 
@@ -356,7 +364,7 @@ export default function DroneShow() {
       if (drones.length !== n) {
         drones = Array.from({ length: n }, () => ({
           x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0,
-          gx: 0, gy: 0, sx: 0, sy: 0, row: 0, delay: 0,
+          gx: 0, gy: 0, sx: 0, sy: 0, row: 0, wave: 0, delay: 0,
           depth: 1, s: 1,
           color: [...GROUND_COLOR] as RGB,
           want: [...GROUND_COLOR] as RGB,
@@ -441,10 +449,22 @@ export default function DroneShow() {
         ctx.globalAlpha = 1;
       }
 
+      // slow drift/rotation/breathing applied to formation targets so
+      // the shapes fly instead of hanging static
+      const fCx = W / 2;
+      const fCy = H * 0.43;
+      const fA = mode === "show" ? 0.05 * Math.sin(T * 0.45) : 0;
+      const fS = mode === "show" ? 1 + 0.035 * Math.sin(T * 0.4 + 1.2) : 1;
+      const fOx = mode === "show" ? W * 0.04 * Math.sin(T * 0.31) : 0;
+      const fOy = mode === "show" ? H * 0.03 * Math.sin(T * 0.53 + 1.7) : 0;
+      const fCos = Math.cos(fA);
+      const fSin = Math.sin(fA);
+
       ctx.globalCompositeOperation = "lighter";
       for (const d of drones) {
         // choose target by phase
         let airborne = mode === "show" || mode === "hold";
+        let parked = false;
         if (mode === "ground") {
           d.tx = d.gx;
           d.ty = d.gy;
@@ -453,8 +473,22 @@ export default function DroneShow() {
           const armed = T - GROUND_END > d.delay;
           d.tx = armed ? d.sx : d.gx;
           d.ty = armed ? d.sy : d.gy;
-          d.want = armed ? HOVER_COLOR : GROUND_COLOR;
+          // lights fade to near-dark once a drone parks in its layer
+          const ddx = d.x - d.sx;
+          const ddy = d.y - d.sy;
+          parked = armed && ddx * ddx + ddy * ddy < 500;
+          d.want = parked ? DARK_COLOR : armed ? HOVER_COLOR : GROUND_COLOR;
           airborne = armed;
+        }
+
+        // effective target — formation slots ride the drift transform
+        let ex = d.tx;
+        let ey = d.ty;
+        if (mode === "show") {
+          const rx = (d.tx - fCx) * fS;
+          const ry = (d.ty - fCy) * fS;
+          ex = fCx + rx * fCos - ry * fSin + fOx;
+          ey = fCy + rx * fSin + ry * fCos + fOy;
         }
 
         // wander + spring integration
@@ -464,8 +498,8 @@ export default function DroneShow() {
         const wy = Math.cos(T * 0.7 + d.phase * 1.7) * wob;
         const k = mode === "show" ? 30 : 14;
         const damp = mode === "show" ? 9.5 : 6.5;
-        d.vx += ((d.tx + wx - d.x) * k - d.vx * damp) * dt;
-        d.vy += ((d.ty + wy - d.y) * k - d.vy * damp) * dt;
+        d.vx += ((ex + wx - d.x) * k - d.vx * damp) * dt;
+        d.vy += ((ey + wy - d.y) * k - d.vy * damp) * dt;
 
         // dodge the cursor; spring brings them home afterwards
         if (mouse.on && airborne) {
@@ -493,7 +527,8 @@ export default function DroneShow() {
         // brightness: dim on the ground, flicker alive in the air
         const grounded = Math.abs(d.y - d.gy) < 4 && mode !== "show";
         const flick = 0.82 + 0.18 * Math.sin(T * 2.6 + d.phase * 3);
-        const b = (grounded ? 0.38 : 1) * flick * (0.55 + 0.45 * d.s);
+        const b =
+          (grounded ? 0.38 : parked ? 0.26 : 1) * flick * (0.55 + 0.45 * d.s);
         const [r, g, bl] = d.color;
 
         ctx.fillStyle = `rgba(${r | 0},${g | 0},${bl | 0},${0.1 * b})`;
