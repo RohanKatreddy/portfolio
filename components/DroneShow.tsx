@@ -24,8 +24,10 @@ type Drone = {
   gy: number;
   sx: number; // assigned hover slot (same x, stacked altitude band)
   sy: number;
-  row: number; // ground grid row — rows take off together as one plane
+  row: number; // ground grid row
   delay: number; // takeoff stagger (s)
+  depth: number; // perspective scale of this drone's grid slot (far → small)
+  s: number; // current render scale, eases between depth and 1
   color: RGB;
   want: RGB;
   phase: number; // personal rng phase for wander/flicker
@@ -38,9 +40,9 @@ type Formation = {
 };
 
 const GROUND_END = 2.2;
-const TAKEOFF_DUR = 5.4;
-const TAKEOFF_SPREAD = 3.6; // window over which successive planes launch
-const HOLD_DUR = 0; // straight from the completed lattice into formations
+const TAKEOFF_DUR = 3.0;
+const HOLD_DUR = 0.8; // brief beat with the tilted plane aloft, then formations
+const PERSP = 1.7; // perspective strength of the tilted ground plane
 const FORMATION_DUR = 7.0;
 
 const DUSK_TOP: RGB = [14, 20, 48];
@@ -262,28 +264,54 @@ export default function DroneShow() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // pointer evasion — airborne drones dodge the cursor
+    const EVADE_R = 130;
+    const mouse = { x: -9999, y: -9999, on: false };
+    const onPointerMove = (e: PointerEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.on = true;
+    };
+    const onPointerGone = () => {
+      mouse.on = false;
+    };
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerdown", onPointerMove);
+    document.documentElement.addEventListener("pointerleave", onPointerGone);
+    window.addEventListener("blur", onPointerGone);
+
     let gridRows = 1;
     let gridCols = 1;
 
     function buildGround() {
+      // grid laid out as a plane receding toward the horizon: far rows
+      // converge to the center and shrink, near rows spread wide — a
+      // trapezoid on screen, not a rectangle facing the viewer
       const cols = gridCols;
+      const smin = 1 / (1 + PERSP);
+      const farY = H * 0.68;
+      const nearY = H * 0.955;
       drones.forEach((d, i) => {
         const c = i % cols;
         const r = Math.floor(i / cols);
         d.row = r;
-        d.gx = W * 0.06 + (W * 0.88 * (c + 0.5)) / cols + (Math.random() - 0.5) * 3;
-        d.gy = H * 0.87 + (H * 0.1 * (r + 0.5)) / gridRows + (Math.random() - 0.5) * 2;
-        // whole row launches together as one plane, top row first
-        d.delay = (r + 0.5) * (TAKEOFF_SPREAD / gridRows) + (Math.random() - 0.5) * 0.06;
+        const u = cols === 1 ? 0 : (c / (cols - 1)) * 2 - 1; // -1..1 across
+        const z = gridRows === 1 ? 0 : 1 - r / (gridRows - 1); // row 0 = far
+        const sc = 1 / (1 + PERSP * z);
+        d.depth = sc;
+        const norm = (sc - smin) / (1 - smin);
+        d.gx = W / 2 + u * W * 0.46 * sc + (Math.random() - 0.5) * 3 * sc;
+        d.gy = farY + (nearY - farY) * norm + (Math.random() - 0.5) * 2;
+        // the whole plane lifts off together
+        d.delay = Math.random() * 0.15;
       });
     }
 
     function buildScatter() {
-      // each launched plane parks in its own altitude band, keeping its
-      // column — the swarm holds as a stacked lattice, like the videos
+      // the plane rises as one piece and hovers mid-sky, still tilted
       for (const d of drones) {
-        d.sx = d.gx + (Math.random() - 0.5) * 4;
-        d.sy = H * 0.07 + (d.row / gridRows) * H * 0.45 + (Math.random() - 0.5) * 3;
+        d.sx = d.gx + (Math.random() - 0.5) * 3;
+        d.sy = d.gy - H * 0.52 + (Math.random() - 0.5) * 3;
       }
     }
 
@@ -329,6 +357,7 @@ export default function DroneShow() {
         drones = Array.from({ length: n }, () => ({
           x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0,
           gx: 0, gy: 0, sx: 0, sy: 0, row: 0, delay: 0,
+          depth: 1, s: 1,
           color: [...GROUND_COLOR] as RGB,
           want: [...GROUND_COLOR] as RGB,
           phase: Math.random() * Math.PI * 2,
@@ -337,6 +366,7 @@ export default function DroneShow() {
         drones.forEach((d) => {
           d.x = d.gx;
           d.y = d.gy;
+          d.s = d.depth;
         });
       } else {
         buildGround();
@@ -414,6 +444,7 @@ export default function DroneShow() {
       ctx.globalCompositeOperation = "lighter";
       for (const d of drones) {
         // choose target by phase
+        let airborne = mode === "show" || mode === "hold";
         if (mode === "ground") {
           d.tx = d.gx;
           d.ty = d.gy;
@@ -423,6 +454,7 @@ export default function DroneShow() {
           d.tx = armed ? d.sx : d.gx;
           d.ty = armed ? d.sy : d.gy;
           d.want = armed ? HOVER_COLOR : GROUND_COLOR;
+          airborne = armed;
         }
 
         // wander + spring integration
@@ -434,29 +466,47 @@ export default function DroneShow() {
         const damp = mode === "show" ? 9.5 : 6.5;
         d.vx += ((d.tx + wx - d.x) * k - d.vx * damp) * dt;
         d.vy += ((d.ty + wy - d.y) * k - d.vy * damp) * dt;
+
+        // dodge the cursor; spring brings them home afterwards
+        if (mouse.on && airborne) {
+          const mdx = d.x - mouse.x;
+          const mdy = d.y - mouse.y;
+          const md2 = mdx * mdx + mdy * mdy;
+          if (md2 < EVADE_R * EVADE_R) {
+            const md = Math.sqrt(md2) || 1;
+            const f = 1 - md / EVADE_R;
+            const push = 2600 * f * f;
+            d.vx += (mdx / md) * push * dt;
+            d.vy += (mdy / md) * push * dt;
+          }
+        }
+
         d.x += d.vx * dt;
         d.y += d.vy * dt;
 
-        // color chase
+        // color + scale chase (scale eases from perspective depth to
+        // uniform 1 as the swarm leaves the plane for formations)
         d.color = mixRGB(d.color, d.want, Math.min(1, dt * 2.5));
+        const wantS = mode === "show" ? 1 : d.depth;
+        d.s += (wantS - d.s) * Math.min(1, dt * 2.5);
 
         // brightness: dim on the ground, flicker alive in the air
         const grounded = Math.abs(d.y - d.gy) < 4 && mode !== "show";
         const flick = 0.82 + 0.18 * Math.sin(T * 2.6 + d.phase * 3);
-        const b = (grounded ? 0.38 : 1) * flick;
+        const b = (grounded ? 0.38 : 1) * flick * (0.55 + 0.45 * d.s);
         const [r, g, bl] = d.color;
 
         ctx.fillStyle = `rgba(${r | 0},${g | 0},${bl | 0},${0.1 * b})`;
         ctx.beginPath();
-        ctx.arc(d.x, d.y, 7.5, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, 7.5 * d.s, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = `rgba(${r | 0},${g | 0},${bl | 0},${0.3 * b})`;
         ctx.beginPath();
-        ctx.arc(d.x, d.y, 3, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, 3 * d.s, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = `rgba(255,255,255,${0.85 * b})`;
         ctx.beginPath();
-        ctx.arc(d.x, d.y, 1.15, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, Math.max(0.6, 1.15 * d.s), 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.globalCompositeOperation = "source-over";
@@ -521,6 +571,10 @@ export default function DroneShow() {
       if (hiddenTimer !== null) clearInterval(hiddenTimer);
       document.removeEventListener("visibilitychange", syncDriver);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerdown", onPointerMove);
+      document.documentElement.removeEventListener("pointerleave", onPointerGone);
+      window.removeEventListener("blur", onPointerGone);
     };
   }, []);
 
