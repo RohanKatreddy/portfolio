@@ -1,8 +1,9 @@
 import type { Project } from "@/content/projects";
+import HoverVideo from "./HoverVideo";
 import styles from "./ProjectCard.module.css";
 
 export default function ProjectCard({ project }: { project: Project }) {
-  const { title, year, image, description } = project;
+  const { title, year, image, video, description } = project;
   return (
     <article className={styles.card}>
       <div className={styles.media}>
@@ -16,6 +17,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         ) : (
           <div className={styles.placeholder}>DRAWING COMING SOON</div>
         )}
+        {video && <HoverVideo src={video} />}
       </div>
       <div className={styles.text}>
         {/* TODO(open item 1): "20XX" until the real year is known. */}
