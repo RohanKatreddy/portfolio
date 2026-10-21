@@ -5,18 +5,53 @@
   bottom: clamp(16px, 3vh, 32px);
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 8px;
 }
 
 .icon {
   width: 44px;
   height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--muted);
+  cursor: pointer;
   transition: color 160ms;
 }
 .icon:hover {
   color: var(--ink);
+}
+.icon:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.icon:disabled:hover {
+  color: var(--muted);
+}
+
+/* Same dot as the page nav, between the socials and the webring. */
+.dot {
+  width: 5px;
+  height: 5px;
+  margin: 0 6px;
+  border-radius: 50%;
+  background: var(--dot);
+  flex: none;
+}
+
+.webring {
+  display: flex;
+  align-items: center;
+}
+/* The webring's logo, tinted with the current text colour. */
+.ringIcon {
+  width: 22px;
+  height: 22px;
+  background-color: currentColor;
+  -webkit-mask: var(--ring-icon) center / contain no-repeat;
+  mask: var(--ring-icon) center / contain no-repeat;
 }

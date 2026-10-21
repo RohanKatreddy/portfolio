@@ -1,4 +1,5 @@
 import { CONTACT } from "@/content/contact";
+import Webring from "./Webring";
 import styles from "./ContactRow.module.css";
 
 function LinkedInIcon() {
@@ -48,6 +49,8 @@ export default function ContactRow() {
       <a href={CONTACT.email} aria-label="Email" className={styles.icon}>
         <EmailIcon />
       </a>
+      <span aria-hidden="true" className={styles.dot} />
+      <Webring />
     </footer>
   );
 }
