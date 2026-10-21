@@ -4,7 +4,8 @@
   margin-top: clamp(40px, 6vh, 64px);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  /* Room for the bar light between the heading and the grid. */
+  gap: 34px;
 }
 
 .heading {

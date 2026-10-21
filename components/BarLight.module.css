@@ -1,55 +1,140 @@
-/* Wraps the tag; cqw = 1% of the tag width. */
-.mount {
+/* The lit content block (strip list / card grid). The header section is its
+   own stacking context, so the glow (z-index -1) sits behind the content but
+   above the page background. */
+.block {
   position: relative;
-  width: clamp(216px, 21.6vw, 312px);
-  container-type: inline-size;
 }
 
-/* Warm pool of light behind the tag. It stays above the page background
-   because the header section is its own stacking context. */
+/* Warm pool of light cast down from the bar. */
 .glow {
   position: absolute;
   left: 50%;
-  top: -70px;
-  width: 280cqw;
-  height: 175cqw;
+  top: -40px;
   transform: translateX(-50%);
   z-index: -1;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.35) 24px, #000 48px);
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.35) 24px, #000 48px);
-  background: radial-gradient(
-    ellipse 50% 58% at 50% 40px,
-    rgba(255, 206, 132, 0.27) 0%,
-    rgba(255, 192, 112, 0.15) 28%,
-    rgba(255, 178, 98, 0.055) 56%,
-    rgba(255, 170, 90, 0) 80%
-  );
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.4) 22px, #000 44px);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.4) 22px, #000 44px);
   opacity: 0;
   transition: opacity 900ms ease 220ms;
 }
+.experiences {
+  width: 124%;
+  height: 440px;
+  background: radial-gradient(
+    ellipse 52% 58% at 50% 34px,
+    rgba(255, 206, 132, 0.24) 0%,
+    rgba(255, 192, 112, 0.13) 32%,
+    rgba(255, 178, 98, 0.045) 62%,
+    rgba(255, 170, 90, 0) 85%
+  );
+}
+.projects {
+  width: 118%;
+  height: 620px;
+  background: radial-gradient(
+    ellipse 54% 62% at 50% 34px,
+    rgba(255, 206, 132, 0.3) 0%,
+    rgba(255, 192, 112, 0.16) 30%,
+    rgba(255, 178, 98, 0.055) 60%,
+    rgba(255, 170, 90, 0) 85%
+  );
+}
 
+/* Spans the block plus a 12px overhang each side, on the block's top edge. */
 .fixture {
   position: absolute;
-  inset: 0;
-  z-index: 2;
+  left: -12px;
+  right: -12px;
+  top: -17px;
+  height: 15px;
+  z-index: 4;
   pointer-events: none;
 }
 
-.rod {
+.tube {
   position: absolute;
-  top: -25px;
-  width: 3px;
-  height: 27px;
-  border-radius: 1px;
-  background: linear-gradient(90deg, #3e2f12 0%, #b59a5c 45%, #5a4520 100%);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+  left: 9px;
+  right: 9px;
+  top: 1px;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: radial-gradient(ellipse 5% 90% at 14% 55%, rgba(58, 66, 44, 0.4), rgba(0, 0, 0, 0) 100%),
+    radial-gradient(ellipse 3% 80% at 41% 35%, rgba(40, 30, 12, 0.4), rgba(0, 0, 0, 0) 100%),
+    radial-gradient(ellipse 6% 90% at 67% 60%, rgba(62, 70, 48, 0.32), rgba(0, 0, 0, 0) 100%),
+    radial-gradient(ellipse 4% 80% at 88% 40%, rgba(40, 30, 12, 0.35), rgba(0, 0, 0, 0) 100%),
+    linear-gradient(180deg, #d8c48c 0%, #b0934f 20%, #7a5f2e 52%, #46350f 82%, #7c6233 100%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.55);
+}
+.tubeWear {
+  position: absolute;
+  inset: 0;
+  background: url("/assets/paper-wear.svg") 0 0 / 220px 110px;
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+}
+.tubeHighlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2px;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 240, 200, 0) 0%,
+    rgba(255, 240, 200, 0.45) 18%,
+    rgba(255, 240, 200, 0.2) 45%,
+    rgba(255, 240, 200, 0.42) 72%,
+    rgba(255, 240, 200, 0.18) 90%,
+    rgba(255, 240, 200, 0) 100%
+  );
 }
 
+.diffuser,
+.diffuserLit {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 11px;
+  height: 3px;
+  border-radius: 2px;
+}
+.diffuser {
+  background: linear-gradient(180deg, #2e2616, #5a4c30);
+}
+.diffuserLit {
+  background: #fff3cf;
+  box-shadow: 0 0 6px 2px rgba(255, 216, 146, 0.85), 0 6px 18px 6px rgba(255, 200, 120, 0.32);
+  opacity: 0;
+  transition: opacity 280ms ease 80ms;
+}
+
+.cap {
+  position: absolute;
+  top: -1px;
+  width: 13px;
+  height: 16px;
+  border-radius: 3px;
+}
+.capLeft {
+  left: 0;
+  background: radial-gradient(ellipse 60% 40% at 40% 70%, rgba(58, 66, 44, 0.35), rgba(0, 0, 0, 0) 100%),
+    linear-gradient(180deg, #cdb67c 0%, #96793f 35%, #4e3b15 80%, #6e5729 100%);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.35), 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+.capRight {
+  right: 0;
+  background: radial-gradient(ellipse 50% 40% at 60% 30%, rgba(40, 30, 12, 0.35), rgba(0, 0, 0, 0) 100%),
+    linear-gradient(180deg, #cdb67c 0%, #96793f 35%, #4e3b15 80%, #6e5729 100%);
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.2), 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Pull chain hanging from the right end cap, just outside the content edge. */
 .chain {
   position: absolute;
-  left: calc(119cqw - 34px);
-  top: -24px;
+  right: -15.5px;
+  top: 13px;
   width: 44px;
   height: 86px;
   padding: 0;
@@ -71,15 +156,15 @@
 .beads {
   position: absolute;
   left: 21px;
-  top: -12px;
+  top: -11px;
   width: 2px;
-  height: 82px;
+  height: 72px;
   background: repeating-linear-gradient(180deg, #a98f55 0 2px, #4e3c18 2px 2.6px, rgba(0, 0, 0, 0) 2.6px 3.6px);
 }
 .pull {
   position: absolute;
   left: 18.5px;
-  top: 69px;
+  top: 59px;
   width: 7px;
   height: 13px;
   border-radius: 2px 2px 3px 3px;
@@ -87,99 +172,18 @@
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
 }
 
-.bar {
-  position: absolute;
-  left: -19cqw;
-  width: 138cqw;
-  top: -38px;
-  height: 15px;
-}
-.knob {
-  position: absolute;
-  top: -5px;
-  width: 9px;
-  height: 7px;
-  border-radius: 3px 3px 1px 1px;
-  background: linear-gradient(90deg, #3e2f12, #b59a5c 45%, #5a4520);
-}
-.tube {
-  position: absolute;
-  left: 9px;
-  right: 9px;
-  top: 1px;
-  height: 12px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: radial-gradient(ellipse 9% 90% at 21% 55%, rgba(58, 66, 44, 0.4), rgba(0, 0, 0, 0) 100%),
-    radial-gradient(ellipse 6% 80% at 57% 35%, rgba(40, 30, 12, 0.4), rgba(0, 0, 0, 0) 100%),
-    radial-gradient(ellipse 11% 90% at 84% 60%, rgba(62, 70, 48, 0.32), rgba(0, 0, 0, 0) 100%),
-    linear-gradient(180deg, #d8c48c 0%, #b0934f 20%, #7a5f2e 52%, #46350f 82%, #7c6233 100%);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.55);
-}
-.tubeWear {
-  position: absolute;
-  inset: 0;
-  background: url("/assets/paper-wear.svg") 0 0 / 220px 110px;
-  opacity: 0.9;
-  mix-blend-mode: multiply;
-}
-.tubeHighlight {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 2px;
-  height: 1.5px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 240, 200, 0) 0%,
-    rgba(255, 240, 200, 0.45) 30%,
-    rgba(255, 240, 200, 0.2) 60%,
-    rgba(255, 240, 200, 0.4) 85%,
-    rgba(255, 240, 200, 0) 100%
-  );
-}
-.diffuser,
-.diffuserLit {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  top: 11px;
-  height: 3px;
-  border-radius: 2px;
-}
-.diffuser {
-  background: linear-gradient(180deg, #2e2616, #5a4c30);
-}
-.diffuserLit {
-  background: #fff3cf;
-  box-shadow: 0 0 6px 2px rgba(255, 216, 146, 0.85), 0 5px 16px 5px rgba(255, 200, 120, 0.35);
-  opacity: 0;
-  transition: opacity 280ms ease 80ms;
-}
-.cap {
-  position: absolute;
-  top: -1px;
-  width: 13px;
-  height: 16px;
-  border-radius: 3px;
-}
-.capLeft {
-  left: 0;
-  background: radial-gradient(ellipse 60% 40% at 40% 70%, rgba(58, 66, 44, 0.35), rgba(0, 0, 0, 0) 100%),
-    linear-gradient(180deg, #cdb67c 0%, #96793f 35%, #4e3b15 80%, #6e5729 100%);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.35), 0 3px 5px rgba(0, 0, 0, 0.5);
-}
-.capRight {
-  right: 0;
-  background: radial-gradient(ellipse 50% 40% at 60% 30%, rgba(40, 30, 12, 0.35), rgba(0, 0, 0, 0) 100%),
-    linear-gradient(180deg, #cdb67c 0%, #96793f 35%, #4e3b15 80%, #6e5729 100%);
-  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.2), 0 3px 5px rgba(0, 0, 0, 0.5);
+/* Lit: an explicit override, or "auto" in dark mode. */
+.block[data-lamp="on"] > .glow,
+.block[data-lamp="on"] .diffuserLit,
+:global(html[data-mode="dark"]) .block[data-lamp="auto"] > .glow,
+:global(html[data-mode="dark"]) .block[data-lamp="auto"] .diffuserLit {
+  opacity: 1;
 }
 
-/* Lit: an explicit override, or "auto" in dark mode. */
-.mount[data-lamp="on"] .glow,
-.mount[data-lamp="on"] .diffuserLit,
-:global(html[data-mode="dark"]) .mount[data-lamp="auto"] .glow,
-:global(html[data-mode="dark"]) .mount[data-lamp="auto"] .diffuserLit {
-  opacity: 1;
+/* Narrow screens: a shorter overhang keeps the chain on screen. */
+@media (max-width: 640px) {
+  .fixture {
+    left: -6px;
+    right: -6px;
+  }
 }

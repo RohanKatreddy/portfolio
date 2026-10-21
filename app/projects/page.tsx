@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SiteChrome from "@/components/SiteChrome";
-import TagWithBarLight from "@/components/BarLight";
+import Tag from "@/components/Tag";
+import BarLight from "@/components/BarLight";
 import PageNav from "@/components/PageNav";
 import ProjectCard from "@/components/ProjectCard";
 import ContactRow from "@/components/ContactRow";
@@ -16,15 +17,16 @@ export default function ProjectsPage() {
       <SiteChrome />
       <section className={header.section}>
         <h1 className="sr-only">Projects</h1>
-        <TagWithBarLight />
+        <Tag variant="inner" />
         <PageNav variant="inner" current="/projects" />
         <div className={styles.wrap}>
           <h2 className={styles.heading}>Projects ({PROJECTS.length})</h2>
-          <div className={styles.grid}>
+          {/* No per-card casts: the semi-transparent cards pick up the glow behind them. */}
+          <BarLight variant="projects" className={styles.grid}>
             {PROJECTS.map((p) => (
               <ProjectCard key={p.title} project={p} />
             ))}
-          </div>
+          </BarLight>
         </div>
       </section>
       <ContactRow />

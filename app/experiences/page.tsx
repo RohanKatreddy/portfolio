@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SiteChrome from "@/components/SiteChrome";
-import TagWithBarLight from "@/components/BarLight";
+import Tag from "@/components/Tag";
+import BarLight from "@/components/BarLight";
 import PageNav from "@/components/PageNav";
 import ExperienceStrip from "@/components/ExperienceStrip";
 import ContactRow from "@/components/ContactRow";
@@ -16,13 +17,13 @@ export default function ExperiencesPage() {
       <SiteChrome />
       <section className={header.section}>
         <h1 className="sr-only">Experiences</h1>
-        <TagWithBarLight />
+        <Tag variant="inner" />
         <PageNav variant="inner" current="/experiences" />
-        <div className={styles.list}>
+        <BarLight variant="experiences" className={styles.list}>
           {EXPERIENCES.map((item, i) => (
             <ExperienceStrip key={`${item.company}-${item.role}`} item={item} index={i} />
           ))}
-        </div>
+        </BarLight>
       </section>
       <ContactRow />
     </main>

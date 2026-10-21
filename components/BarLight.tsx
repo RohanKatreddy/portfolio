@@ -1,16 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useMode } from "@/lib/theme";
-import Tag from "./Tag";
 import styles from "./BarLight.module.css";
 
+type Props = {
+  /** Picks the glow pool size: Projects uses a larger one. */
+  variant: "experiences" | "projects";
+  /** Layout class for the block itself (the strip list or the card grid). */
+  className?: string;
+  children: ReactNode;
+};
+
 /**
- * The inner-page tag under a vintage aged-brass picture light.
+ * Vintage aged-brass picture light mounted along the top edge of a content
+ * block (the strip list on Experiences, the card grid on Projects).
  * lit = lampOverride ?? isDark. Pulling the chain only changes the light;
  * switching Night/Day clears the override so the light follows the mode.
+ * The block carries data-lamp so children (e.g. strip light casts) can react.
  */
-export default function TagWithBarLight() {
+export default function BarLight({ variant, className, children }: Props) {
   const { isDark } = useMode();
   const [lampOverride, setLampOverride] = useState<boolean | null>(null);
 
@@ -21,12 +30,17 @@ export default function TagWithBarLight() {
   const lamp = lampOverride === null ? "auto" : lampOverride ? "on" : "off";
 
   return (
-    <div className={styles.mount} data-lamp={lamp}>
-      <div aria-hidden="true" className={styles.glow} />
-      <Tag variant="inner" />
+    <div className={`${styles.block} ${className ?? ""}`} data-lamp={lamp}>
+      <div aria-hidden="true" className={`${styles.glow} ${styles[variant]}`} />
       <div className={styles.fixture}>
-        <div aria-hidden="true" className={styles.rod} style={{ left: "28%" }} />
-        <div aria-hidden="true" className={styles.rod} style={{ left: "72%" }} />
+        <div aria-hidden="true" className={styles.tube}>
+          <div className={styles.tubeWear} />
+          <div className={styles.tubeHighlight} />
+        </div>
+        <div aria-hidden="true" className={styles.diffuser} />
+        <div aria-hidden="true" className={styles.diffuserLit} />
+        <div aria-hidden="true" className={`${styles.cap} ${styles.capLeft}`} />
+        <div aria-hidden="true" className={`${styles.cap} ${styles.capRight}`} />
         <button
           type="button"
           className={styles.chain}
@@ -38,19 +52,8 @@ export default function TagWithBarLight() {
           <span className={styles.beads} />
           <span className={styles.pull} />
         </button>
-        <div aria-hidden="true" className={styles.bar}>
-          <div className={styles.knob} style={{ left: "30%" }} />
-          <div className={styles.knob} style={{ left: "68%" }} />
-          <div className={styles.tube}>
-            <div className={styles.tubeWear} />
-            <div className={styles.tubeHighlight} />
-          </div>
-          <div className={styles.diffuser} />
-          <div className={styles.diffuserLit} />
-          <div className={`${styles.cap} ${styles.capLeft}`} />
-          <div className={`${styles.cap} ${styles.capRight}`} />
-        </div>
       </div>
+      {children}
     </div>
   );
 }

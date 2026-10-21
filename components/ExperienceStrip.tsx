@@ -2,6 +2,8 @@ import type { Experience } from "@/content/experiences";
 import styles from "./ExperienceStrip.module.css";
 
 const TILTS = ["-3deg", "2deg", "-1.5deg", "2.5deg", "-2deg", "1.5deg"];
+/** How strongly the bar light falls on each strip, top down, when it is lit. */
+const LIGHT = [1, 0.34, 0.1];
 
 /** An ATC flight progress strip in a brushed-silver holder. */
 export default function ExperienceStrip({ item, index }: { item: Experience; index: number }) {
@@ -58,6 +60,9 @@ export default function ExperienceStrip({ item, index }: { item: Experience; ind
           </div>
         )}
       </div>
+      {/* Warm light from the bar above, strongest on the top strip. */}
+      <div aria-hidden="true" className={styles.cast} style={{ ["--light" as string]: LIGHT[index] ?? 0 }} />
+      <div aria-hidden="true" className={styles.castSoft} style={{ ["--light" as string]: LIGHT[index] ?? 0 }} />
     </article>
   );
 }

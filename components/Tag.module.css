@@ -8,6 +8,7 @@
   perspective: 1400px;
 }
 .inner {
+  width: clamp(216px, 21.6vw, 312px);
   perspective: 900px;
 }
 

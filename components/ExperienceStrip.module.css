@@ -11,6 +11,41 @@
   transform: translateX(14px);
 }
 
+/* Light cast from the bar light: --light is the strip's intensity when lit.
+   It follows the enclosing bar light's data-lamp (and the mode, when "auto"). */
+.cast,
+.castSoft {
+  position: absolute;
+  inset: 0;
+  border-radius: 13px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms ease 220ms;
+}
+.cast {
+  mix-blend-mode: overlay;
+  background: radial-gradient(
+    ellipse 62% 135% at 50% 0%,
+    rgba(255, 184, 92, 0.9) 0%,
+    rgba(255, 170, 80, 0.45) 55%,
+    rgba(255, 160, 70, 0.14) 100%
+  );
+}
+.castSoft {
+  background: radial-gradient(
+    ellipse 60% 120% at 50% 0%,
+    rgba(255, 214, 150, 0.22) 0%,
+    rgba(255, 200, 130, 0.08) 60%,
+    rgba(255, 200, 130, 0) 100%
+  );
+}
+:global([data-lamp="on"]) .cast,
+:global([data-lamp="on"]) .castSoft,
+:global(html[data-mode="dark"] [data-lamp="auto"]) .cast,
+:global(html[data-mode="dark"] [data-lamp="auto"]) .castSoft {
+  opacity: var(--light);
+}
+
 /* The paper strip, recessed into the holder. */
 .paper {
   display: grid;

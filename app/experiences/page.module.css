@@ -1,7 +1,8 @@
+/* Extra top margin leaves room for the bar light on the list's top edge. */
 .list {
   width: 100%;
   max-width: 1000px;
-  margin-top: clamp(32px, 5vh, 52px);
+  margin-top: clamp(56px, 7.5vh, 76px);
   display: flex;
   flex-direction: column;
   gap: 14px;
