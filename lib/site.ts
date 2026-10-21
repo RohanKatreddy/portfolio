@@ -1,3 +1,9 @@
+/**
+ * Intro animation on/off. true: plays when landing on Home (once per tab).
+ * false: never plays, and its overlay and textures are left out entirely.
+ */
+export const INTRO_ENABLED = true;
+
 /** Background style. Glass ships; Paper is the optional alternative from the design. */
 export const BG_STYLE: "glass" | "paper" = "glass";
 
@@ -26,7 +32,7 @@ try{
   var p=location.pathname,home=p==='/'||p==='/index'||p==='/index.html';
   var played=sessionStorage.getItem('${INTRO_KEY}');
   var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(home&&!played&&!still){
+  if(${INTRO_ENABLED}&&home&&!played&&!still){
     d.setAttribute('data-intro','play');
     var assets=${JSON.stringify(INTRO_ASSETS)};
     assets[m].forEach(function(h){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h;document.head.appendChild(l);});

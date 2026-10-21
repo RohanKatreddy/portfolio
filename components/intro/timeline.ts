@@ -16,8 +16,8 @@ export const TRAIL_H = 48;
 /** Scene starts, back to back, in authored seconds (the design's 1× timing). */
 export const CUES = { Sunrise: 0, Transit: 2.2, Condense: 4.6, Home: 6.4 } as const;
 export const TOTAL = 8.0;
-/** Playback speed. The 8.0s authored timeline plays in TOTAL / SPEED ≈ 3.6s. */
-export const SPEED = 2.2;
+/** Playback speed. The 8.0s authored timeline plays in TOTAL / SPEED seconds (3 → about 2.7s). */
+export const SPEED = 3;
 
 // ── Easing / tween helpers (same maths as the prototype's engine) ──
 const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v));

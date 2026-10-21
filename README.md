@@ -33,7 +33,7 @@ Deploy by uploading `out/` to any static host (Vercel, Netlify, GitHub Pages, S3
 ## Behaviour notes
 
 - **Theme:** colours are CSS-driven from `html[data-mode]`, set before first paint, so there is no flash. The page background crossfades over 300ms.
-- **Intro:** plays once per session when landing on `/`; skipped under `prefers-reduced-motion`, and when the visit starts on another route. Skip with the button, a click, or Esc. It uses the saved mode (sun or moon), and the field fades to the Glass background so the logo lands seamlessly on Home.
+- **Intro:** turn it on or off with `INTRO_ENABLED` in `lib/site.ts`. When on, it plays once per session when landing on `/`; skipped under `prefers-reduced-motion`, and when the visit starts on another route. Skip with the button, a click, or Esc. It uses the saved mode (sun or moon), and the field fades to the Glass background so the logo lands seamlessly on Home.
 - **Dev helper:** `/?introT=3.2` freezes the intro at 3.2s (development only).
 - **Bar light:** `lit = lampOverride ?? isDark`; the chain toggles only the light, and Night/Day resets it.
 

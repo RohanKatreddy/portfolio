@@ -3,6 +3,7 @@ import Tag from "@/components/Tag";
 import PageNav from "@/components/PageNav";
 import ContactRow from "@/components/ContactRow";
 import Intro from "@/components/intro/Intro";
+import { INTRO_ENABLED } from "@/lib/site";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -21,7 +22,7 @@ export default function HomePage() {
         </section>
         <ContactRow />
       </main>
-      <Intro />
+      {INTRO_ENABLED && <Intro />}
     </>
   );
 }
