@@ -17,6 +17,6 @@
   color: var(--muted);
   transition: color 160ms;
 }
-a.icon:hover {
+.icon:hover {
   color: var(--ink);
 }

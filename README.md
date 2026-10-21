@@ -41,5 +41,5 @@ Deploy by uploading `out/` to any static host (Vercel, Netlify, GitHub Pages, S3
 
 1. Real years for five projects (`content/projects.ts`, shown as "20XX").
 2. Flora Feed drawing (`floraFeed.png` / `floraFeedDark.png`) and a fuller description.
-3. Confirm contact links (`content/contact.ts`). X has no URL yet, so its icon is not a link.
+3. Confirm the LinkedIn URL (`content/contact.ts`); it comes from the resume.
 4. Optional: expanded view per strip (remaining resume bullets are already in `content/experiences.ts`) and a details view per project.

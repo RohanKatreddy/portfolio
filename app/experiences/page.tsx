@@ -3,6 +3,7 @@ import SiteChrome from "@/components/SiteChrome";
 import TagWithBarLight from "@/components/BarLight";
 import PageNav from "@/components/PageNav";
 import ExperienceStrip from "@/components/ExperienceStrip";
+import ContactRow from "@/components/ContactRow";
 import header from "@/components/InnerHeader.module.css";
 import { EXPERIENCES } from "@/content/experiences";
 import styles from "./page.module.css";
@@ -23,6 +24,7 @@ export default function ExperiencesPage() {
           ))}
         </div>
       </section>
+      <ContactRow />
     </main>
   );
 }

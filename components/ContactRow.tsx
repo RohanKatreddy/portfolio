@@ -42,16 +42,9 @@ export default function ContactRow() {
       <a href={CONTACT.linkedin} aria-label="LinkedIn" className={styles.icon} target="_blank" rel="noopener noreferrer">
         <LinkedInIcon />
       </a>
-      {CONTACT.x ? (
-        <a href={CONTACT.x} aria-label="X" className={styles.icon} target="_blank" rel="noopener noreferrer">
-          <XIcon />
-        </a>
-      ) : (
-        // TODO(open item 3): no X URL yet.
-        <span aria-hidden="true" className={styles.icon}>
-          <XIcon />
-        </span>
-      )}
+      <a href={CONTACT.x} aria-label="X" className={styles.icon} target="_blank" rel="noopener noreferrer">
+        <XIcon />
+      </a>
       <a href={CONTACT.email} aria-label="Email" className={styles.icon}>
         <EmailIcon />
       </a>

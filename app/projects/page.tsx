@@ -3,6 +3,7 @@ import SiteChrome from "@/components/SiteChrome";
 import TagWithBarLight from "@/components/BarLight";
 import PageNav from "@/components/PageNav";
 import ProjectCard from "@/components/ProjectCard";
+import ContactRow from "@/components/ContactRow";
 import header from "@/components/InnerHeader.module.css";
 import { PROJECTS } from "@/content/projects";
 import styles from "./page.module.css";
@@ -26,6 +27,7 @@ export default function ProjectsPage() {
           </div>
         </div>
       </section>
+      <ContactRow />
     </main>
   );
 }

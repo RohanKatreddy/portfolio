@@ -1,11 +1,9 @@
 /**
- * Contact links on Home.
- * TODO(open item 3): confirm these hrefs. LinkedIn and Email are the values
- * from the resume. X has no URL yet; its icon renders but is not a link
- * until one is added here.
+ * Contact links, shown at the bottom of every page.
+ * TODO(open item 3): LinkedIn is the value from the resume; confirm it.
  */
 export const CONTACT = {
   linkedin: "https://linkedin.com/in/rohankatreddy",
-  x: null as string | null,
+  x: "https://x.com/rohan_katreddy",
   email: "mailto:rohan.katreddy@gmail.com",
 };
