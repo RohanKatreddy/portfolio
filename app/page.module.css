@@ -1,6 +1,7 @@
 .hero {
   min-height: 100vh;
-  padding: clamp(120px, 14vh, 180px) 24px 80px;
+  /* Extra bottom padding lifts the tag group just above the screen's centre. */
+  padding: clamp(120px, 14vh, 180px) 24px clamp(160px, 18vh, 240px);
   display: flex;
   flex-direction: column;
   align-items: center;
