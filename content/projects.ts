@@ -32,8 +32,7 @@ export const PROJECTS: Project[] = [
     // 640×360 cut of the autonaerospace.com home video.
     video: "/assets/projects/quadcopter.mp4",
     description:
-      "CnC cut carbon fiber + 3D printed housing. The brain is a custom F7 based avionics stack capable of running BetaFlight/Ardupilot."
-    // TODO: add a description.
+      "CnC cut carbon fiber + 3D printed housing. The brain is a custom F7 based avionics stack capable of running BetaFlight/Ardupilot.",
   },
   {
     title: "Modular Fixed-Wing Aircraft",
