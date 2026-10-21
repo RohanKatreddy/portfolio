@@ -21,7 +21,7 @@ export const EXPERIENCES: Experience[] = [
     start: "Dec 2025",
     end: "Jul 2026",
     impact: [
-      "Raised $1M pre-seed (PearX, Pareto); Led a 7-engineer team building camera-only drone autonomy models",
+      "Raised ~$1M pre-seed (PearX, Pareto); Led a 7-engineer team building camera-only drone autonomy models",
       "Post-trained π0.5, a VLA model, with SFT and full-parameter GRPO against 3D Gaussian-splat scenes rebuilt from phone video - final distance to goal went from 3.02 m → 1.84 m (-39%) across 192 episodes",
       "Built the JAX → PyTorch/Triton weight-conversion bridge that made rollout inference fast enough to train against, plus an Optuna/ASHA sweep across a Modal H200/B200 fleet",
       "Developed BlueUAS-compliant digital video transmission system and STM32F7 avionics stack",
