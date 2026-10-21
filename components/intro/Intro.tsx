@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MARIA, PLANE_PATH } from "@/components/Logo";
 import { INTRO_ASSETS } from "@/lib/site";
-import { ENG_Y, FLIGHT_Y, HEADING, PLANE, TOTAL, TRAIL_H, TRAIL_L, TRAIL_W, frame, type Layout } from "./timeline";
+import { ENG_Y, FLIGHT_Y, HEADING, PLANE, SPEED, TOTAL, TRAIL_H, TRAIL_L, TRAIL_W, frame, type Layout } from "./timeline";
 import styles from "./Intro.module.css";
 
 const GLOW_SUN =
@@ -69,7 +69,7 @@ export default function Intro() {
 
   useEffect(() => {
     const root = document.documentElement;
-    // Dev only: `/?introT=3.2` freezes the intro at that time, for inspecting frames.
+    // Dev only: `/?introT=3.2` freezes the intro at that authored time (1× seconds).
     const frozen =
       process.env.NODE_ENV !== "production" ? new URLSearchParams(location.search).get("introT") : null;
     if (frozen !== null) {
@@ -109,7 +109,7 @@ export default function Intro() {
       go("playing");
       const t0 = performance.now();
       const tick = (now: number) => {
-        const t = (now - t0) / 1000;
+        const t = ((now - t0) / 1000) * SPEED;
         if (t >= TOTAL) {
           finish();
           return;
