@@ -33,7 +33,7 @@ export const EXPERIENCES: Experience[] = [
     start: "May 2025",
     end: "Aug 2025",
     impact: [
-      "Employee #2 - Built the first thermochemical reactors to extract rare-earth metals (NdPr & Dy) from ore",
+      "Employee #3 - Built the first thermochemical reactors to extract rare-earth metals (NdPr & Dy) from recycled magnets",
       "Built SCADA system for thermochemical reactors to remote supervise enabling 24/7 plant operations resulting in 3x yield output. Non-linear reactor models predicts temp and pressure runaways with 97% accuracy",
       "Engineered telemetry pipeline -ESP-32s, Postgres, and Grafana - logging 50,000+ points/day across live reactors",
       "Built a gradient-descent parameter-optimization model for refinement processes, improving yield quality 37%.",
