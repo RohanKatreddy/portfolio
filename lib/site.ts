@@ -2,7 +2,7 @@
  * Intro animation on/off. true: plays when landing on Home (once per tab).
  * false: never plays, and its overlay and textures are left out entirely.
  */
-export const INTRO_ENABLED = true;
+export const INTRO_ENABLED = false;
 
 /** Background style. Glass ships; Paper is the optional alternative from the design. */
 export const BG_STYLE: "glass" | "paper" = "glass";
