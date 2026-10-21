@@ -3,11 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./ProjectCard.module.css";
 
+/** On touch screens the clip plays while the card crosses this middle band of the screen. */
+const CENTER_BAND = "-40% 0px -40% 0px";
+
 /**
- * Muted clip that plays over a project card's drawing while the card is
- * hovered, and pauses (keeping its place) when the pointer leaves. On
- * touch-only devices a tap on the card toggles it. Nothing is downloaded
- * until the first play.
+ * Muted clip that plays over a project card's drawing and pauses (keeping
+ * its place) when it stops being the focus:
+ * - mouse/pen: while the card is hovered;
+ * - touch screens: while the card is in the middle of the screen
+ *   (or on tap, if the visitor prefers reduced motion).
+ * Nothing is downloaded until the first play.
  */
 export default function HoverVideo({ src }: { src: string }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -25,28 +30,41 @@ export default function HoverVideo({ src }: { src: string }) {
       video.pause();
       setVisible(false);
     };
-    const onEnter = (e: PointerEvent) => {
-      if (e.pointerType !== "touch") play();
-    };
-    const onLeave = (e: PointerEvent) => {
-      if (e.pointerType !== "touch") stop();
-    };
-    const onClick = () => {
-      if (!window.matchMedia("(hover: none)").matches) return;
-      if (video.paused) play();
-      else stop();
-    };
     // Fade in only once frames are actually playing, so the drawing stays up while it loads.
     const onPlaying = () => setVisible(true);
-
-    card.addEventListener("pointerenter", onEnter);
-    card.addEventListener("pointerleave", onLeave);
-    card.addEventListener("click", onClick);
     video.addEventListener("playing", onPlaying);
+
+    const touch = window.matchMedia("(hover: none)").matches;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let detach: () => void;
+    if (touch && !still) {
+      const io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? play() : stop()), {
+        rootMargin: CENTER_BAND,
+      });
+      io.observe(card);
+      detach = () => io.disconnect();
+    } else if (touch) {
+      const onClick = () => (video.paused ? play() : stop());
+      card.addEventListener("click", onClick);
+      detach = () => card.removeEventListener("click", onClick);
+    } else {
+      const onEnter = (e: PointerEvent) => {
+        if (e.pointerType !== "touch") play();
+      };
+      const onLeave = (e: PointerEvent) => {
+        if (e.pointerType !== "touch") stop();
+      };
+      card.addEventListener("pointerenter", onEnter);
+      card.addEventListener("pointerleave", onLeave);
+      detach = () => {
+        card.removeEventListener("pointerenter", onEnter);
+        card.removeEventListener("pointerleave", onLeave);
+      };
+    }
+
     return () => {
-      card.removeEventListener("pointerenter", onEnter);
-      card.removeEventListener("pointerleave", onLeave);
-      card.removeEventListener("click", onClick);
+      detach();
       video.removeEventListener("playing", onPlaying);
     };
   }, []);
