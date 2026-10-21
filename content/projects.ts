@@ -15,14 +15,14 @@ export type Project = {
 export const PROJECTS: Project[] = [
   {
     title: "Natural Language Autonomous Drones",
-    year: null, // TODO(open item 1): real year
+    year: "2026", // TODO(open item 1): real year
     image: "quadcopter",
     description:
       "Build drones capable of natural language instructions to increase accessibility and use cases across industrial industries.",
   },
   {
     title: "Modular Fixed-Wing Aircraft",
-    year: null, // TODO(open item 1): real year
+    year: "2025", // TODO(open item 1): real year
     image: "rcPlane",
     description: "Build a modular payload, high endurance aircraft for custom autopilot testing and ground mapping.",
   },
@@ -34,20 +34,20 @@ export const PROJECTS: Project[] = [
   },
   {
     title: "Solar Powered LoRa Weather Station",
-    year: null, // TODO(open item 1): real year
+    year: "2023", // TODO(open item 1): real year
     image: "weatherStation",
     description: "Monitor weather and air quality in areas without power or connectivity infrastructure",
   },
   {
     title: "Waypoint Autonomous Car",
-    year: null, // TODO(open item 1): real year
+    year: "2024", // TODO(open item 1): real year
     image: "rcCar",
     description:
       "Build an autonomous car to be used for deliveries and as a stepping stone for future aerial autopilots",
   },
   {
     title: "InMoov Humanoid Robot",
-    year: null, // TODO(open item 1): real year
+    year: "2023", // TODO(open item 1): real year
     image: "inMoov",
     description:
       "Led the InMoov humanoid project as STEM Club lead, turning it into an end-to-end learning platform in 3D printing, electronics, and software.",
