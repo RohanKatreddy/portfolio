@@ -15,7 +15,7 @@ export default function HomePage() {
           <h1 className="sr-only">Rohan Katreddy</h1>
           <Tag variant="home" />
           <p className={styles.oneLiner}>
-            <span className={styles.muted}>Always building in:</span>{" "}
+            <span className={styles.muted}>Building stuff in:</span>{" "}
             <span className={styles.strong}>Aerial robotics and AI</span>
           </p>
           <PageNav variant="home" />
