@@ -9,8 +9,10 @@ export type Project = {
   image: string | null;
   /** Optional muted clip in /public, played over the drawing while the card is hovered. */
   video?: string;
-  /** The "What?" line from Portfolio.pdf, verbatim. */
-  description: string;
+  /** Text in the dashed box when there is no image. Defaults to "DRAWING COMING SOON". */
+  placeholder?: string;
+  /** The "What?" line from Portfolio.pdf, verbatim. Optional. */
+  description?: string;
 };
 
 // TODO(open item 5): optional details view per project ("How?" / "Results?" from Portfolio.pdf).
@@ -18,11 +20,20 @@ export const PROJECTS: Project[] = [
   {
     title: "Natural Language Autonomous Drones",
     year: "2026", // TODO(open item 1): real year
+    image: null,
+    placeholder: "COMING SOON",
+    description:
+      "Build drones capable of natural language instructions to increase accessibility and use cases across industrial industries.",
+  },
+  {
+    title: 'NDAA compliant 10" quadcopters',
+    year: "2026", // TODO(open item 1): real year
     image: "quadcopter",
     // 640×360 cut of the autonaerospace.com home video.
     video: "/assets/projects/quadcopter.mp4",
     description:
-      "Build drones capable of natural language instructions to increase accessibility and use cases across industrial industries.",
+      "CnC cut carbon fiber + 3D printed housing. The brain is a custom F7 based avionics stack capable of running BetaFlight/Ardupilot."
+    // TODO: add a description.
   },
   {
     title: "Modular Fixed-Wing Aircraft",
