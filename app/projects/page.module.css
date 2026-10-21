@@ -1,0 +1,23 @@
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin-top: clamp(40px, 6vh, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  gap: 16px;
+}

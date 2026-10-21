@@ -1,0 +1,37 @@
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.home {
+  margin-top: 18px;
+  font-size: clamp(16px, 1.2vw, 19px);
+}
+.inner {
+  margin-top: 22px;
+  font-size: clamp(15px, 1.1vw, 18px);
+}
+
+.link {
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition: color 160ms;
+}
+.link:hover {
+  color: var(--link-hover);
+}
+
+.current {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--dot);
+  flex: none;
+}

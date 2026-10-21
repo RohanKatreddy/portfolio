@@ -1,0 +1,145 @@
+/* Hidden unless BOOT_SCRIPT decided the intro plays, so there is no flash
+   for return visits, other routes, or reduced motion. */
+.intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  cursor: default;
+  transition: opacity 300ms ease;
+}
+:global(html[data-intro="play"]) .intro {
+  display: block;
+}
+.intro[data-leaving] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ground,
+.field {
+  position: absolute;
+  inset: 0;
+}
+.ground {
+  background: var(--bg-day);
+}
+:global(html[data-mode="dark"]) .ground {
+  background: var(--bg-night);
+}
+/* First paint (before React measures the viewport): just the dark field. */
+.field {
+  background: #15120e;
+}
+:global(html[data-mode="dark"]) .field {
+  background: #07080b;
+}
+
+/* 1000×1000 emblem box, disc centred at (500, 500), r = 420. */
+.emblem {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  transform-origin: 500px 500px;
+  will-change: transform;
+}
+.layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
+  height: 1000px;
+  transform-origin: 500px 500px;
+}
+
+.glow {
+  position: absolute;
+  left: -150px;
+  top: -150px;
+  width: 1300px;
+  height: 1300px;
+  border-radius: 50%;
+}
+.ping,
+.flatSun {
+  position: absolute;
+  left: 80px;
+  top: 80px;
+  width: 840px;
+  height: 840px;
+  border-radius: 50%;
+}
+.disc,
+.flatMoon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
+  height: 1000px;
+}
+
+/* Textured trails are masked to the disc area; flat trails are clipped to it. */
+.discMask {
+  -webkit-mask-image: radial-gradient(circle at 500px 500px, #000 0px, #000 425px, rgba(0, 0, 0, 0.5) 470px, rgba(0, 0, 0, 0) 600px);
+  mask-image: radial-gradient(circle at 500px 500px, #000 0px, #000 425px, rgba(0, 0, 0, 0.5) 470px, rgba(0, 0, 0, 0) 600px);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.discClip {
+  clip-path: circle(420px at 500px 500px);
+}
+
+/* Each trail fades out over the 150 units nearest the plane. */
+.trail {
+  position: absolute;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.25) 24px, #000 150px);
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.25) 24px, #000 150px);
+}
+.trailImg,
+.trailFlat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+}
+.trailFlat {
+  clip-path: polygon(0 10px, 100% 14px, 100% 34px, 0 38px);
+}
+
+.plane {
+  position: absolute;
+  overflow: visible;
+}
+
+.skip {
+  position: absolute;
+  right: clamp(20px, 2.1vw, 40px);
+  bottom: clamp(16px, 3vh, 32px);
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(1.8);
+  backdrop-filter: blur(18px) saturate(1.8);
+  color: rgba(255, 255, 255, 0.62);
+  font-family: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 200ms, transform 420ms cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.skip:hover {
+  color: #ffffff;
+  transform: scale(1.06);
+}
+.skip:active {
+  transform: scale(0.96);
+}
+.skip:focus-visible {
+  outline-color: #ffffff;
+}

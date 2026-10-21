@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rohan Katreddy — portfolio
 
-## Getting Started
+Aviation-themed portfolio built from the design handoff in `portfolio_design_handoff/`.
+Next.js (App Router) + TypeScript + CSS Modules, exported as a static site.
 
-First, run the development server:
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
+npm run build        # static site in out/
+npm start            # serve out/ locally
+npm run typecheck
+npm run intro:raster # regenerate public/intro/*.webp from the intro's SVG sources
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deploy by uploading `out/` to any static host (Vercel, Netlify, GitHub Pages, S3…).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Path | What |
+|---|---|
+| `app/page.tsx`, `app/experiences/`, `app/projects/` | The three routes |
+| `app/globals.css` | Theme tokens (Glass/Paper × light/dark) and the page shell |
+| `lib/site.ts` | `BG_STYLE` constant and the pre-paint boot script (saved mode, intro decision) |
+| `lib/theme.ts` | `useMode()`; `<html data-mode>` is the source of truth, saved to `localStorage['rk-mode']` |
+| `components/` | Logo, Night/Day pill, tag, bar light, strips, cards |
+| `components/intro/` | Intro timeline (`timeline.ts`, ported from `intro-animation.jsx`) and overlay |
+| `content/` | Experiences, projects and contact links as typed arrays |
+| `public/assets/` | Tag faces, paper texture, project drawings (copied from the handoff) |
+| `public/intro/` | Pre-rasterised sun, moon and contrail textures |
 
-## Learn More
+## Behaviour notes
 
-To learn more about Next.js, take a look at the following resources:
+- **Theme:** colours are CSS-driven from `html[data-mode]`, set before first paint, so there is no flash. The page background crossfades over 300ms.
+- **Intro:** plays once per session when landing on `/`; skipped under `prefers-reduced-motion`, and when the visit starts on another route. Skip with the button, a click, or Esc. It uses the saved mode (sun or moon), and the field fades to the Glass background so the logo lands seamlessly on Home.
+- **Dev helper:** `/?introT=3.2` freezes the intro at 3.2s (development only).
+- **Bar light:** `lit = lampOverride ?? isDark`; the chain toggles only the light, and Night/Day resets it.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Open items (TODOs in code)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Real years for five projects (`content/projects.ts`, shown as "20XX").
+2. Flora Feed drawing (`floraFeed.png` / `floraFeedDark.png`) and a fuller description.
+3. Confirm contact links (`content/contact.ts`). X has no URL yet, so its icon is not a link.
+4. Optional: expanded view per strip (remaining resume bullets are already in `content/experiences.ts`) and a details view per project.

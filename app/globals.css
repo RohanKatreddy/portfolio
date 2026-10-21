@@ -1,12 +1,193 @@
-@import "tailwindcss";
+/* ─────────────────────────────────────────────────────────────
+   Theme tokens
+   - html[data-mode="light" | "dark"] is set by an inline script before
+     first paint (see app/layout.tsx), from localStorage['rk-mode'].
+   - html[data-bg="glass" | "paper"] is a build-time constant (lib/site.ts).
+   ───────────────────────────────────────────────────────────── */
 
-@theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  /* Page backgrounds per style. `.page` paints the day layer and fades the
+     night layer over it, so the 300ms mode change is a real crossfade. */
+  --bg-day: radial-gradient(90% 70% at 50% 42%, #ffffff 0%, #f4f5f7 40%, #e6e8eb 75%, #d6d9de 100%);
+  --bg-night: radial-gradient(90% 70% at 50% 42%, #2a2d33 0%, #1c1e23 55%, #111216 100%);
+
+  /* Glass light */
+  --body-bg: #e6e8eb;
+  --ink: #17191d;
+  --muted: #4a4f58;
+  --link-hover: #000000;
+  --dot: #8a8f98;
+
+  --pill-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.4) 100%);
+  --pill-line: rgba(255, 255, 255, 0.85);
+  --pill-shadow: inset 0 1px 1px #ffffff, inset 0 -2px 3px rgba(255, 255, 255, 0.55),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.7), 0 10px 28px rgba(30, 34, 44, 0.14),
+    0 1px 3px rgba(30, 34, 44, 0.12);
+  /* Light mode shows a moon (the mode you'd switch to). */
+  --pill-disc: radial-gradient(circle closest-side, #f1efe9, #cbc7be 85%, #aeaaa1);
+  --pill-disc-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-line: rgba(23, 25, 29, 0.1);
+  --card-line-hover: rgba(23, 25, 29, 0.3);
+  --card-hover-shadow: 0 14px 30px rgba(30, 34, 44, 0.08);
+  --meta: #737882;
+  --desc: #4a4f58;
+
+  --rim-bg: linear-gradient(105deg, rgba(255, 255, 255, 0) 22%, rgba(255, 255, 255, 0.85) 40%, rgba(255, 255, 255, 0) 54%),
+    linear-gradient(100deg, rgba(255, 255, 255, 0) 66%, rgba(255, 255, 255, 0.45) 76%, rgba(255, 255, 255, 0) 84%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.14) 0 1px, rgba(0, 0, 0, 0.045) 1px 2px),
+    linear-gradient(180deg, #ffffff 0%, #e2e5e9 9%, #b3b8bf 42%, #9a9fa7 58%, #c4c8ce 84%, #f3f4f6 100%);
+  --rim-shadow: inset 0 1.5px 0 #ffffff, inset 0 -1.5px 0 rgba(0, 0, 0, 0.32), inset 1px 0 0 rgba(255, 255, 255, 0.8),
+    inset -1px 0 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(98, 104, 112, 0.5), 0 12px 24px rgba(30, 34, 44, 0.2),
+    0 3px 5px rgba(30, 34, 44, 0.2);
+  --paper-bg: #efebe1;
+
+  --night-layer: 0;
+}
+
+/* Glass dark */
+html[data-mode="dark"] {
+  --body-bg: #121418;
+  --ink: #e8eaee;
+  --muted: #9a9fa8;
+  --link-hover: #ffffff;
+  --dot: #555a63;
+
+  --pill-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --pill-line: rgba(255, 255, 255, 0.16);
+  --pill-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28), inset 0 -1px 1px rgba(255, 255, 255, 0.06),
+    0 10px 28px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.4);
+  /* Dark mode shows a white sun. */
+  --pill-disc: radial-gradient(circle closest-side, #ffffff, #e6e8ec 85%, #c9cdd3);
+  --pill-disc-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+
+  --card-bg: rgba(255, 255, 255, 0.035);
+  --card-line: rgba(255, 255, 255, 0.1);
+  --card-line-hover: rgba(255, 255, 255, 0.3);
+  --card-hover-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  --meta: #8b909a;
+  --desc: #a9aeb7;
+
+  --rim-bg: linear-gradient(105deg, rgba(255, 255, 255, 0) 22%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0) 54%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, rgba(0, 0, 0, 0.05) 1px 2px),
+    linear-gradient(180deg, #c3c7cc 0%, #8e9298 14%, #61656b 50%, #7a7e85 84%, #aeb2b7 100%);
+  --rim-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+    inset 1px 0 0 rgba(255, 255, 255, 0.18), inset -1px 0 0 rgba(0, 0, 0, 0.25), 0 12px 26px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  --paper-bg: #dcd7cb;
+
+  --night-layer: 1;
+}
+
+/* Paper (optional alternative background style) */
+html[data-bg="paper"] {
+  --bg-day: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, rgba(0, 0, 0, 0) 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.035) 0 1px, rgba(0, 0, 0, 0) 1px 3px),
+    radial-gradient(120% 90% at 50% 38%, #e3ded6 0%, #d9d3ca 60%, #c9c2b8 100%);
+  --bg-night: #08090d;
+}
+html[data-bg="paper"]:not([data-mode="dark"]) {
+  --body-bg: #d9d3ca;
+  --ink: #1d1a17;
+  --muted: #5d554d;
+  --link-hover: #9a4a1c;
+  --dot: #a39a8f;
+  --card-bg: rgba(255, 255, 255, 0.4);
+  --card-line: rgba(29, 26, 23, 0.13);
+  --meta: #766d63;
+  --desc: #5d554d;
+}
+html[data-bg="paper"][data-mode="dark"] {
+  --body-bg: #08090d;
+  --ink: #e6e8ec;
+  --muted: #8b909a;
+  --link-hover: #dfe5ee;
+  --dot: #4a4e57;
+}
+
+/* ───────────────────────────── Base ───────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--body-bg);
+  transition: background-color 300ms;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: #000;
-  color: #ededed;
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-barlow), system-ui, sans-serif;
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Full-viewport page shell shared by every route. */
+.page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--bg-day);
+  transition: color 300ms;
+  font-family: var(--font-barlow), system-ui, sans-serif;
+}
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-night);
+  opacity: var(--night-layer);
+  transition: opacity 300ms;
+  pointer-events: none;
+}
+
+/* Mode-dependent content is rendered for both modes and toggled here, so the
+   first paint is correct before React hydrates. */
+html:not([data-mode="dark"]) .only-dark,
+html[data-mode="dark"] .only-light {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
 }

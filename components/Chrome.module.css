@@ -1,0 +1,70 @@
+/* Logo + Night/Day pill. Both sit at z-index 5 above page content. */
+
+.logo {
+  --edge: clamp(20px, 2.1vw, 40px);
+  --size: clamp(56px, 5vw, 96px);
+  position: absolute;
+  z-index: 5;
+  left: var(--edge);
+  top: var(--edge);
+  width: var(--size);
+  height: var(--size);
+  display: block;
+  border-radius: 50%;
+}
+.logo > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.logoSun {
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 6px 14px rgba(40, 44, 52, 0.16));
+}
+.logoMoon {
+  display: block;
+}
+
+.pill {
+  position: absolute;
+  z-index: 5;
+  right: clamp(20px, 2.1vw, 40px);
+  top: calc(clamp(20px, 2.1vw, 40px) + clamp(56px, 5vw, 96px) / 2 - 22px);
+  height: 44px;
+  padding: 0 16px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 22px;
+  border: 1px solid var(--pill-line);
+  background: var(--pill-bg);
+  -webkit-backdrop-filter: blur(18px) saturate(1.8);
+  backdrop-filter: blur(18px) saturate(1.8);
+  box-shadow: var(--pill-shadow);
+  color: var(--muted);
+  font-family: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 420ms cubic-bezier(0.3, 1.6, 0.5, 1), color 200ms;
+}
+.pill:hover {
+  color: var(--ink);
+  transform: scale(1.06);
+}
+.pill:active {
+  transform: scale(0.96);
+}
+
+.pillDisc {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--pill-disc);
+  box-shadow: var(--pill-disc-shadow);
+}

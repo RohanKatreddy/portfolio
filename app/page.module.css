@@ -1,0 +1,24 @@
+.hero {
+  min-height: 100vh;
+  padding: clamp(120px, 14vh, 180px) 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.oneLiner {
+  margin: clamp(48px, 7vh, 72px) 0 0;
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-wrap: pretty;
+}
+.muted {
+  color: var(--muted);
+}
+.strong {
+  color: var(--ink);
+  font-weight: 500;
+}

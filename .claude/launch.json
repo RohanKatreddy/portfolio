@@ -2,10 +2,40 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "lafuckingda-dev",
+      "name": "portfolio-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3000"
+      ],
       "port": 3000
+    },
+    {
+      "name": "design-reference",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "serve@14.2.4",
+        "-l",
+        "3001",
+        "portfolio_design_handoff/design_handoff_portfolio/design"
+      ],
+      "port": 3001
+    },
+    {
+      "name": "portfolio-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "serve@14.2.4",
+        "-l",
+        "3002",
+        "out"
+      ],
+      "port": 3002
     }
   ]
 }

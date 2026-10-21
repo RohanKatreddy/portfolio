@@ -1,0 +1,18 @@
+/* Header column shared by Experiences and Projects. Its own stacking context
+   (z-index 0) keeps the lamp glow behind the tag but above the page background. */
+.section {
+  position: relative;
+  z-index: 0;
+  padding: clamp(50px, 6.5vh, 64px) clamp(16px, 4vw, 48px) 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* On narrow screens the brass fixture would run into the logo and the pill,
+   so the column starts below them. */
+@media (max-width: 640px) {
+  .section {
+    padding-top: calc(clamp(20px, 2.1vw, 40px) + clamp(56px, 5vw, 96px) + 56px);
+  }
+}

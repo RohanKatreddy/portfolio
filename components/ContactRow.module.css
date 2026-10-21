@@ -1,0 +1,22 @@
+.row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(16px, 3vh, 32px);
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color 160ms;
+}
+a.icon:hover {
+  color: var(--ink);
+}

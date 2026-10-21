@@ -1,0 +1,203 @@
+/* Silver holder (rim). */
+.holder {
+  position: relative;
+  padding: 10px;
+  border-radius: 13px;
+  background: var(--rim-bg);
+  box-shadow: var(--rim-shadow);
+  transition: transform 320ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.holder:hover {
+  transform: translateX(14px);
+}
+
+/* The paper strip, recessed into the holder. */
+.paper {
+  display: grid;
+  grid-template-columns: minmax(150px, 1.9fr) minmax(100px, 0.6fr) minmax(0, 4.45fr);
+  min-height: 112px;
+  background-color: var(--paper-bg);
+  background-image: url("/assets/paper-wear.svg"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 35%, rgba(110, 90, 50, 0.05) 100%);
+  background-size: 480px 240px, 100% 100%;
+  border-radius: 4px;
+  box-shadow: inset 0 4px 6px -1px rgba(0, 0, 0, 0.42), inset 0 1px 1px rgba(0, 0, 0, 0.5),
+    inset 3px 0 5px -3px rgba(0, 0, 0, 0.3), inset -3px 0 5px -3px rgba(0, 0, 0, 0.22),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.55), inset 0 0 16px rgba(120, 100, 60, 0.12),
+    0 0 0 1px rgba(52, 55, 60, 0.6), 0 1px 0 1px rgba(255, 255, 255, 0.85), 0 -1px 0 1px rgba(90, 95, 102, 0.35);
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  color: #2a2926;
+  overflow: hidden;
+}
+.withCells {
+  grid-template-columns: minmax(150px, 1.9fr) minmax(100px, 0.6fr) minmax(0, 4fr) minmax(40px, 0.45fr);
+}
+
+.label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #6b675e;
+}
+
+/* 1. Identity */
+.identity {
+  padding: 12px 14px;
+  border-right: 1px solid #bdb6a8;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.company {
+  margin: 0;
+  font-size: clamp(16px, 1.6vw, 21px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.role {
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #4f4c45;
+}
+.barcode {
+  margin-top: auto;
+  height: 13px;
+  width: 86%;
+  opacity: 0.85;
+  background: repeating-linear-gradient(
+    90deg,
+    #2a2926 0 1px,
+    rgba(0, 0, 0, 0) 1px 3px,
+    #2a2926 3px 4.5px,
+    rgba(0, 0, 0, 0) 4.5px 5.5px,
+    #2a2926 5.5px 6.5px,
+    rgba(0, 0, 0, 0) 6.5px 9px,
+    #2a2926 9px 11px,
+    rgba(0, 0, 0, 0) 11px 12px
+  );
+}
+
+/* 2. Year */
+.year {
+  padding: 10px 10px 10px 12px;
+  border-right: 1px solid #bdb6a8;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.start {
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.seq {
+  font-family: var(--font-marker), cursive;
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1;
+  margin: 2px 0 0 -2px;
+  color: #141414;
+  transform-origin: left center;
+}
+.end {
+  margin-top: auto;
+  font-size: 11.5px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: #4f4c45;
+  white-space: nowrap;
+}
+
+/* Plex Mono's web subsets have no "→". Use the system monospace glyph, as the
+   design does, rather than next/font's size-adjusted Arial fallback. */
+.arrow {
+  font-family: ui-monospace, monospace;
+}
+
+/* 3. Impact */
+.impact {
+  padding: 10px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.impactHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 16px;
+}
+.now {
+  font-family: var(--font-marker), cursive;
+  font-size: 19px;
+  line-height: 1;
+  color: #c0262d;
+  transform: rotate(-5deg) skewX(-8deg);
+  margin: -4px 2px;
+}
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.line {
+  display: flex;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  text-wrap: pretty;
+}
+.dash {
+  flex: none;
+  color: #6b675e;
+}
+
+/* 4. Cells */
+.cells {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  border-left: 1px solid #bdb6a8;
+}
+.cells > div:not(:last-child) {
+  border-bottom: 1px solid #bdb6a8;
+}
+
+/* Narrow screens: identity on top, then a row with the year and impact.
+   The cells column is dropped. */
+@media (max-width: 640px) {
+  .paper,
+  .withCells {
+    grid-template-columns: minmax(96px, auto) minmax(0, 1fr);
+    grid-template-areas:
+      "id id"
+      "yr impact";
+  }
+  .identity {
+    grid-area: id;
+    border-right: 0;
+    border-bottom: 1px solid #bdb6a8;
+  }
+  .barcode {
+    margin-top: 6px;
+    width: min(86%, 220px);
+  }
+  .year {
+    grid-area: yr;
+  }
+  .impact {
+    grid-area: impact;
+  }
+  .cells {
+    display: none;
+  }
+  .holder:hover {
+    transform: translateX(6px);
+  }
+}

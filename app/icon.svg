@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="70 70 860 860">
+  <defs>
+    <radialGradient id="s" cx="500" cy="500" r="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fdfdfe"/>
+      <stop offset="0.6" stop-color="#eef0f2"/>
+      <stop offset="0.88" stop-color="#e0e3e7"/>
+      <stop offset="1" stop-color="#c9cdd3"/>
+    </radialGradient>
+    <linearGradient id="t" x1="733.6" y1="0" x2="583.6" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2a2d33" stop-opacity="0"/>
+      <stop offset="0.16" stop-color="#2a2d33" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#2a2d33" stop-opacity="1"/>
+    </linearGradient>
+    <clipPath id="c"><circle cx="500" cy="500" r="420"/></clipPath>
+  </defs>
+  <circle cx="500" cy="500" r="420" fill="url(#s)"/>
+  <g clip-path="url(#c)">
+    <g transform="rotate(-4 500 500)">
+      <polygon points="-340,524.4 733.6,528.3 733.6,548.5 -340,552.4" fill="url(#t)"/>
+      <polygon points="-340,567.6 733.6,571.5 733.6,591.7 -340,595.6" fill="url(#t)"/>
+      <g transform="translate(640 470) scale(0.9)" fill="#1c1e23">
+        <path d="M40 91.5 L178 91.5 C189 91.5 197 95 198.5 100 C197 105 189 108.5 178 108.5 L40 108.5 C25 108 12 104 4 101 L4 99 C12 96 25 92 40 91.5 Z M122 92 L82 12 L76 12.5 L89 70.5 L86 92 Z M122 108 L82 188 L76 187.5 L89 129.5 L86 108 Z M82 12 L78 6 L75 6.5 L76 12.5 Z M82 188 L78 194 L75 193.5 L76 187.5 Z M36 92 L21 65 L14 65.5 L13 92 Z M36 108 L21 135 L14 134.5 L13 108 Z"/>
+        <rect x="104" y="71" width="24" height="10" rx="5"/>
+        <rect x="104" y="119" width="24" height="10" rx="5"/>
+      </g>
+    </g>
+  </g>
+  <circle cx="500" cy="500" r="413" fill="none" stroke="rgba(255,255,255,0.95)" stroke-width="12"/>
+  <circle cx="500" cy="500" r="420" fill="none" stroke="rgba(20,22,28,0.16)" stroke-width="4"/>
+</svg>
