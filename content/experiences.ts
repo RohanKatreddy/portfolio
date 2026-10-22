@@ -46,7 +46,7 @@ export const EXPERIENCES: Experience[] = [
     end: "Nov 2025",
     cells: true,
     impact: [
-      "Led the development of four modular 1.5m wingspan fixed-wing aircraft to validate our avionics and train pilots",
+      "Built four modular 1.5m wingspan fixed-wing aircraft to validate our avionics and train pilots",
       "Built a fire detection and geo-tagging system using OpenCV for AEAC 2025. We placed first nationally.",
     ],
   },
